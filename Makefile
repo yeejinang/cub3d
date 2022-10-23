@@ -3,14 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyap <hyap@student.42kl.edu.my>            +#+  +:+       +#+         #
+#    By: yang <yang@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 15:59:25 by hyap              #+#    #+#              #
-#    Updated: 2022/10/20 21:42:27 by hyap             ###   ########.fr        #
+#    Updated: 2022/10/21 15:45:36 by yang             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS = ${wildcard srcs/*.c} ${wildcard gnl/*.c} ${wildcard srcs/utils/*.c} ${wildcard srcs/parsing/*.c}
+# SRCS = ${wildcard srcs/*.c} ${wildcard gnl/*.c} ${wildcard srcs/utils/*.c} ${wildcard srcs/parsing/*.c}
+
+SRCS = srcs/minimap/*.c
 
 CC = gcc
 

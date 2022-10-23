@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   container.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyap <hyap@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: yang <yang@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 17:09:53 by hyap              #+#    #+#             */
-/*   Updated: 2022/10/21 12:58:48 by hyap             ###   ########.fr       */
+/*   Updated: 2022/10/21 14:12:57 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ typedef	struct s_int_pos		t_int_pos;
 typedef struct s_img			t_img;
 typedef struct s_color			t_color;
 
-typedef struct s_color {
+struct s_color {
 	int	r;
 	int	g;
 	int b;
 };
 
-typedef struct s_img {
+struct s_img {
 	void	*img;
 	char	*addr;
 	int		bpp;
