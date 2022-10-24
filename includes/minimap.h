@@ -3,26 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yang <yang@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yang <yang@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 14:30:03 by yang              #+#    #+#             */
-/*   Updated: 2022/10/21 19:16:27 by yang             ###   ########.fr       */
+/*   Updated: 2022/10/23 14:58:40 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIMAP_H
-# define MINIMAP_H
+#define MINIMAP_H
 
 #include "container.h"
 
-typedef struct s_minimap 
+typedef struct s_minimap
 {
-	int		width;
-	int		height;
-	int		start_x;
-	int		start_y;
-	t_int_pos player;
-	t_img	map;
+	int width;
+	int height;
+	int start_x;
+	int start_y;
+	double player_x;
+	double player_y;
+	t_img map;
 } t_minimap;
 
 #endif
