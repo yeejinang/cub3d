@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yang <yang@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: yang <yang@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 14:30:03 by yang              #+#    #+#             */
-/*   Updated: 2022/10/23 14:58:40 by yang             ###   ########.fr       */
+/*   Updated: 2022/10/26 15:20:55 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,31 @@
 
 #include "container.h"
 
+#define PI 3.1415926535
+
+typedef struct s_matrix
+{
+	double x0;
+	double x1;
+	double y0;
+	double y1;
+}	t_matrix;
+
 typedef struct s_minimap
 {
-	int width;
-	int height;
-	int start_x;
-	int start_y;
-	double player_x;
-	double player_y;
-	t_img map;
+	double 		start_x;
+	double 		start_y;
+	t_matrix	player_pos; // player_pos to facing direction
+	int			line_len;
+	double 		scale;
+	double 		player_delta_x;
+	double 		player_delta_y;
+	double 		player_angle; // in degree
+	t_img 		map;
+	t_img		floor;
+	t_img		wall;
 } t_minimap;
+
+double deg_to_rad(double degree);
 
 #endif
