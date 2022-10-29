@@ -6,13 +6,15 @@
 #    By: yang <yang@student.42kl.edu.my>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 15:59:25 by hyap              #+#    #+#              #
-#    Updated: 2022/10/29 01:04:07 by yang             ###   ########.fr        #
+#    Updated: 2022/10/29 11:58:17 by yang             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # SRCS = ${wildcard srcs/*.c} ${wildcard gnl/*.c} ${wildcard srcs/utils/*.c} ${wildcard srcs/parsing/*.c}
 
 SRCS = srcs/minimap/raycasting.c srcs/minimap/minimap.c srcs/minimap/utils.c 
+
+# SRCS = srcs/minimap/try_raycasting.c
 
 CC = gcc
 

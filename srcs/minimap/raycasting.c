@@ -6,7 +6,7 @@
 /*   By: yang <yang@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:44:33 by yang              #+#    #+#             */
-/*   Updated: 2022/10/29 01:49:16 by yang             ###   ########.fr       */
+/*   Updated: 2022/10/29 12:39:01 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,21 @@
 #define MAP_HEIGHT 15.0
 
 char *map_1[15] = {
-	"11111111111111111111",
-	"10000010000000100001",
-	"101000100W0000100001",
-	"10100010000000100001",
-	"10000000001110100001",
-	"10000100000001000001",
-	"10000100000000100001",
-	"10000100000000100001",
-	"11111100000000100001",
-	"10000000000111100001",
-	"10000000000000100001",
-	"1000000E000000100001",
-	"10000000000000100001",
-	"10000000000000100001",
-	"11111111111111111111",
+	"111111111111111", // 0
+	"100000000000001", // 1
+	"101000000000001", // 2
+	"101000000000001", // 3
+	"100000000011101", // 4
+	"100001000000010", // 5
+	"100001000000001", // 6
+	"100001000000001", // 7
+	"11111100W000001", // 8
+	"100010000001111", // 9
+	"100010000000001", // 10
+	"100000000000001", // 11
+	"100000000000001", // 12
+	"100000000000001", // 13
+	"111111111111111", // 14
 };
 
 void dda(t_matrix matrix, t_minimap *minimap, int color);
@@ -93,19 +93,22 @@ void draw_3D(t_game *game, t_minimap *minimap)
 		// printf("angle: %f\n", angle);
 		double rayDirX = cos(deg_to_rad((int)(angle)));
 		double rayDirY = sin(deg_to_rad((int)(angle)));
+		printf("\nrayDirX: %f\t rayDirY: %f\n", rayDirX, rayDirY);
 		// t_matrix draw_ray;
 		// draw_ray.x0 = minimap->player_pos.x0;
 		// draw_ray.y0 = minimap->player_pos.y0;
-		// draw_ray.x1 = draw_ray.x0 + (rayDirX);
-		// draw_ray.y1 = draw_ray.y0 - (rayDirY);
-		// dda(draw_ray, minimap);
+		// draw_ray.x1 = draw_ray.x0 + ((rayDirX)*5);
+		// draw_ray.y1 = draw_ray.y0 - ((rayDirY)*5);
+		// dda(draw_ray, minimap, 0xFF0000);
 		int mapX = (int)minimap->player_pos.x0;
 		int mapY = (int)minimap->player_pos.y0;
+		// printf("mapX: %d\t mapY: %d\n", mapX, mapY);
 		// printf("mapX: %d\t mapY: %d\n", mapX, mapY);
 		double sideDistX;
 		double sideDistY;
 		double deltaDistX = (rayDirX == 0) ? 1e30 : fabs(1 / rayDirX);
 		double deltaDistY = (rayDirY == 0) ? 1e30 : fabs(1 / rayDirY);
+		printf("deltaDistX: %f\t deltaDistY: %f\n", deltaDistX, deltaDistY);
 		double perpWallDist;
 		int stepX;
 		int stepY;
@@ -132,8 +135,10 @@ void draw_3D(t_game *game, t_minimap *minimap)
 			stepY = 1;
 			sideDistY = (mapY + 1.0 - minimap->player_pos.y0) * deltaDistY;
 		}
+		printf("sideDistX: %f\t sideDistY: %f\n", sideDistX, sideDistY);
 		while (mapX >= 0 && mapX < MAP_WIDTH && mapY >= 0 && mapY <= MAP_HEIGHT && hit == 0)
 		{
+			// printf("mapX: %d\t mapY: %d\n", mapX, mapY);
 			// jump to next map square, either in x-direction, or in y-direction
 			if (sideDistX < sideDistY)
 			{
@@ -149,12 +154,18 @@ void draw_3D(t_game *game, t_minimap *minimap)
 			}
 			// Check if ray has hit a wall
 			// printf("checking hit\n");
-			// printf("map: %c\t x: %d\t y: %d\n", map_1[mapX][mapY], mapX, mapY);
-			if (map_1[mapX][mapY] == '1')
+			printf("map: %c\t x: %d\t y: %d\n", map_1[mapY][mapX], mapX, mapY);
+			if (map_1[mapY][mapX] == '1')
 			{
 				hit = 1;
-				printf("hit!!\n");
-				printf("mapX: %d\t mapY: %d\n", mapX, mapY);
+				t_matrix draw_ray;
+				draw_ray.x0 = minimap->player_pos.x0;
+				draw_ray.y0 = minimap->player_pos.y0;
+				draw_ray.x1 = draw_ray.x0 + ((rayDirY / rayDirX) * (mapX - minimap->player_pos.x0));
+				draw_ray.y1 = draw_ray.y0 - ((rayDirX / rayDirY) * (mapY + minimap->player_pos.y0));
+				dda(draw_ray, minimap, 0xFF0000);
+				// printf("hit!!\n");
+				// printf("mapX: %d\t mapY: %d\n", mapX, mapY);
 			}
 		}
 		if (side == 0)
@@ -172,11 +183,10 @@ void draw_3D(t_game *game, t_minimap *minimap)
 		if (drawEnd >= h)
 			drawEnd = h - 1;
 		int color = 0x0000FF;
-		// if (side == 1)
-		// {
-		// 	color = 0xFF0000;
-		// }
-
+		if (side == 1)
+		{
+			color /= 2;
+		}
 		t_matrix draw;
 		draw.x0 = x * (1000 / STRIPE);
 		draw.x1 = draw.x0;
@@ -185,5 +195,5 @@ void draw_3D(t_game *game, t_minimap *minimap)
 		dda_ver(draw, minimap, color);
 	}
 	// my_mlx_pixel_put(&minimap->map_3d, 100, 100, 0xFFFFFF);
-	mlx_put_image_to_window(game->mlx, game->win, minimap->map_3d.img, 0, 0);
+	mlx_put_image_to_window(game->mlx, game->win, minimap->map_3d.img, 200, 200);
 }
