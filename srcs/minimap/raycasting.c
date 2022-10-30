@@ -6,7 +6,7 @@
 /*   By: yang <yang@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:44:33 by yang              #+#    #+#             */
-/*   Updated: 2022/10/29 12:39:01 by yang             ###   ########.fr       */
+/*   Updated: 2022/10/30 22:43:29 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 #include <stdbool.h>
 #include "minimap.h"
 
-#define FOV 66
-#define STRIPE 10
-#define h 1000
+#define FOV 66.0
+#define STRIPE 800.0
+#define h 500
 #define MAP_WIDTH 20.0
 #define MAP_HEIGHT 15.0
 
@@ -29,13 +29,13 @@ char *map_1[15] = {
 	"101000000000001", // 2
 	"101000000000001", // 3
 	"100000000011101", // 4
-	"100001000000010", // 5
-	"100001000000001", // 6
+	"101000000000010", // 5
+	"101000000000001", // 6
 	"100001000000001", // 7
-	"11111100W000001", // 8
-	"100010000001111", // 9
+	"111111000W00001", // 8
+	"100100000001111", // 9
 	"100010000000001", // 10
-	"100000000000001", // 11
+	"100100000000001", // 11
 	"100000000000001", // 12
 	"100000000000001", // 13
 	"111111111111111", // 14
@@ -47,58 +47,31 @@ void my_mlx_pixel_put(t_img *data, int x, int y, int color);
 
 void dda_ver(t_matrix matrix, t_minimap *minimap, int color)
 {
-	// printf("drawing ....\n");
-	// printf("matrix x0: %f\t x1: %f\t y0: %f\t y1: %f\n", matrix.x0, matrix.x1, matrix.y0, matrix.y1);
-	// double x_step;
-	// double y_step;
-	// double max;
-
-	// x_step = matrix.x1 - matrix.x0;
-	// y_step = matrix.y1 - matrix.y0;
-	// max = get_max(x_step, y_step);
-	// x_step /= max;
-	// y_step /= max;
-	// int x = (int)matrix.x0;
 	int y = (int)matrix.y0;
-	// printf("color: %d\n", color);
-	// while (x < (int)matrix.x1)
-	// {
-	y = 0;
 	while (y < (int)matrix.y1)
 	{
 		my_mlx_pixel_put(&minimap->map_3d, (int)matrix.x0, y, color);
-		// printf("drawing into img\n");
 		y++;
 	}
-	// 	x++;
-	// }
 }
 
 void draw_3D(t_game *game, t_minimap *minimap)
 {
 	int x = -1;
-	// double angle;
-	// printf("player angle: %f\n", minimap->player_angle);
-	// double rayX = cos(deg_to_rad((int)(minimap->player_angle + (FOV / 2) % 360)));
-	// double rayY = sin(deg_to_rad((int)(minimap->player_angle + (FOV / 2) % 360)));
-	// Assumptions
-	// double planeX = 0.0;
-	// double planeY = 0.66;
-	// printf("planeX: %f\t planeY: %f\n", planeX, planeY);
 
-	while (++x <= STRIPE)
+	while (++x < STRIPE)
 	{
 		double angle;
-		angle = (int)(minimap->player_angle + (FOV / 2)) % 360 - (x * (FOV / STRIPE));
-		// printf("angle: %f\n", angle);
-		double rayDirX = cos(deg_to_rad((int)(angle)));
-		double rayDirY = sin(deg_to_rad((int)(angle)));
+		angle = (double)(minimap->player_angle + (FOV / 2)) - ((double)x * (FOV / STRIPE));
+		printf("angle: %f\n", angle);
+		double rayDirX = cos(deg_to_rad(angle));
+		double rayDirY = sin(deg_to_rad(angle));
 		printf("\nrayDirX: %f\t rayDirY: %f\n", rayDirX, rayDirY);
-		// t_matrix draw_ray;
-		// draw_ray.x0 = minimap->player_pos.x0;
-		// draw_ray.y0 = minimap->player_pos.y0;
-		// draw_ray.x1 = draw_ray.x0 + ((rayDirX)*5);
-		// draw_ray.y1 = draw_ray.y0 - ((rayDirY)*5);
+		t_matrix draw_ray;
+		draw_ray.x0 = minimap->player_pos.x0;
+		draw_ray.y0 = minimap->player_pos.y0;
+		draw_ray.x1 = draw_ray.x0 + ((rayDirX)*5);
+		draw_ray.y1 = draw_ray.y0 - ((rayDirY)*5);
 		// dda(draw_ray, minimap, 0xFF0000);
 		int mapX = (int)minimap->player_pos.x0;
 		int mapY = (int)minimap->player_pos.y0;
@@ -106,8 +79,10 @@ void draw_3D(t_game *game, t_minimap *minimap)
 		// printf("mapX: %d\t mapY: %d\n", mapX, mapY);
 		double sideDistX;
 		double sideDistY;
-		double deltaDistX = (rayDirX == 0) ? 1e30 : fabs(1 / rayDirX);
-		double deltaDistY = (rayDirY == 0) ? 1e30 : fabs(1 / rayDirY);
+		// double deltaDistX = (rayDirX == 0) ? 1e30 : fabs(1 / rayDirX);
+		// double deltaDistY = (rayDirY == 0) ? 1e30 : fabs(1 / rayDirY);
+		double deltaDistX = (rayDirX == 0) ? 1e30 : sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
+		double deltaDistY = (rayDirY == 0) ? 1e30 : sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
 		printf("deltaDistX: %f\t deltaDistY: %f\n", deltaDistX, deltaDistY);
 		double perpWallDist;
 		int stepX;
@@ -127,19 +102,31 @@ void draw_3D(t_game *game, t_minimap *minimap)
 		}
 		if (rayDirY < 0)
 		{
-			stepY = -1;
-			sideDistY = (minimap->player_pos.y0 - mapY) * deltaDistY;
-		}
-		else
-		{
 			stepY = 1;
 			sideDistY = (mapY + 1.0 - minimap->player_pos.y0) * deltaDistY;
 		}
+		else
+		{
+			stepY = -1;
+			sideDistY = (minimap->player_pos.y0 - mapY) * deltaDistY;
+		}
+		// if (sideDistX == 0)
+		// 	sideDistX += deltaDistX;
+		// if (sideDistY == 0)
+		// 	sideDistY += deltaDistY;
 		printf("sideDistX: %f\t sideDistY: %f\n", sideDistX, sideDistY);
 		while (mapX >= 0 && mapX < MAP_WIDTH && mapY >= 0 && mapY <= MAP_HEIGHT && hit == 0)
 		{
 			// printf("mapX: %d\t mapY: %d\n", mapX, mapY);
 			// jump to next map square, either in x-direction, or in y-direction
+			// printf("****checking map****\n");
+			// printf("sideDistX: %f\t sideDistY: %f\n", sideDistX, sideDistY);
+			// if (sideDistX == 0.0 && sideDistY == 0.0)
+			// {
+			// 	printf("enter here\n");
+			// 	sideDistX = deltaDistX;
+			// 	sideDistY = deltaDistY;
+			// }
 			if (sideDistX < sideDistY)
 			{
 				sideDistX += deltaDistX;
@@ -152,43 +139,56 @@ void draw_3D(t_game *game, t_minimap *minimap)
 				mapY += stepY;
 				side = 1;
 			}
-			// Check if ray has hit a wall
-			// printf("checking hit\n");
 			printf("map: %c\t x: %d\t y: %d\n", map_1[mapY][mapX], mapX, mapY);
 			if (map_1[mapY][mapX] == '1')
 			{
 				hit = 1;
+				double dist;
 				t_matrix draw_ray;
 				draw_ray.x0 = minimap->player_pos.x0;
 				draw_ray.y0 = minimap->player_pos.y0;
-				draw_ray.x1 = draw_ray.x0 + ((rayDirY / rayDirX) * (mapX - minimap->player_pos.x0));
-				draw_ray.y1 = draw_ray.y0 - ((rayDirX / rayDirY) * (mapY + minimap->player_pos.y0));
-				dda(draw_ray, minimap, 0xFF0000);
-				// printf("hit!!\n");
-				// printf("mapX: %d\t mapY: %d\n", mapX, mapY);
+				// if (side == 1)
+				// 	dist = fabs(mapX - draw_ray.x0 + 1) * deltaDistX;
+				// else
+				// 	dist = fabs(mapY - draw_ray.y0 + 1) * deltaDistY;
+				if (side == 0)
+				{
+					draw_ray.x1 = draw_ray.x0 + (rayDirX * fabs(mapX - draw_ray.x0 + 1) * deltaDistX);
+					draw_ray.y1 = draw_ray.y0 - (rayDirY * fabs(mapX - draw_ray.x0 + 1) * deltaDistX);
+				}
+				else
+				{
+					draw_ray.x1 = draw_ray.x0 + (rayDirX * fabs(mapY - draw_ray.y0) * deltaDistY);
+					draw_ray.y1 = draw_ray.y0 - (rayDirY * fabs(mapY - draw_ray.y0) * deltaDistY);
+				}
+				dda(draw_ray, minimap, 0x00FF00);
+				printf("x: %d\t hit!!\n", x);
+				printf("is side: %d\n", side);
+				printf("mapX: %d\t mapY: %d\n", mapX, mapY);
 			}
 		}
 		if (side == 0)
 			perpWallDist = (sideDistX - deltaDistX);
 		else
 			perpWallDist = (sideDistY - deltaDistY);
-
 		int lineHeight = (int)(h / perpWallDist);
 
 		// calculate lowest and highest pixel to fill in current stripe
+		printf("perpWallDist: %f\t lineHeight: %d\n", perpWallDist, lineHeight);
 		int drawStart = -lineHeight / 2 + h / 2;
 		if (drawStart < 0)
 			drawStart = 0;
 		int drawEnd = lineHeight / 2 + h / 2;
 		if (drawEnd >= h)
 			drawEnd = h - 1;
+		printf("drawStart: %d\t drawEnd: %d\n", drawStart, drawEnd);
 		int color = 0x0000FF;
 		if (side == 1)
 		{
 			color /= 2;
 		}
 		t_matrix draw;
-		draw.x0 = x * (1000 / STRIPE);
+		draw.x0 = x * (800 / STRIPE);
 		draw.x1 = draw.x0;
 		draw.y0 = drawStart;
 		draw.y1 = drawEnd;
