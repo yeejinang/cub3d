@@ -6,7 +6,7 @@
 /*   By: yang <yang@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:45:09 by yang              #+#    #+#             */
-/*   Updated: 2022/10/30 22:25:25 by yang             ###   ########.fr       */
+/*   Updated: 2022/11/02 18:59:45 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ void dda(t_matrix matrix, t_minimap *minimap, int color)
 	max = get_max(x_step, y_step);
 	x_step /= max;
 	y_step /= max;
-	while ((int)(matrix.x0 - matrix.x1) || (int)(matrix.y0 - matrix.y1))
+	while (((int)(matrix.x0 - matrix.x1) || (int)(matrix.y0 - matrix.y1)) && matrix.x0 <= MI_SCREEN_WIDTH && matrix.y0 <= MI_SCREEN_HEIGHT)
 	{
 		my_mlx_pixel_put(&minimap->map, matrix.x0, matrix.y0, color);
 		matrix.x0 += x_step;
@@ -359,8 +359,12 @@ void player_movement(int key, t_game *game)
 	minimap->map.img = mlx_new_image(game->mlx, 200, 200);
 	minimap->map.addr = mlx_get_data_addr(minimap->map.img, &minimap->map.bpp, &minimap->map.size,
 										  &minimap->map.endian);
+	minimap->map_3d.img = mlx_new_image(game->mlx, 800, 800);
+	minimap->map_3d.addr = mlx_get_data_addr(minimap->map_3d.img, &minimap->map_3d.bpp, &minimap->map_3d.size,
+											 &minimap->map_3d.endian);
 	init_minimap(minimap, false);
 	draw_minimap(minimap);
+	draw_3D(game, minimap);
 	mlx_put_image_to_window(game->mlx, game->win, minimap->map.img, 0, 0);
 }
 
