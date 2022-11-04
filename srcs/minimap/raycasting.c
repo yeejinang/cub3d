@@ -6,7 +6,11 @@
 /*   By: yang <yang@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 19:44:33 by yang              #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/11/03 18:12:20 by yang             ###   ########.fr       */
+=======
+/*   Updated: 2022/11/02 21:42:24 by yang             ###   ########.fr       */
+>>>>>>> 6b1cac67af89c8b923664e1c2e5e91e93f88c6e7
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +22,11 @@
 #include "minimap.h"
 
 #define FOV 66.0
+<<<<<<< HEAD
 #define STRIPE 100.0
+=======
+#define STRIPE 400.0
+>>>>>>> 6b1cac67af89c8b923664e1c2e5e91e93f88c6e7
 #define h 500
 #define MAP_WIDTH 20.0
 #define MAP_HEIGHT 15.0
