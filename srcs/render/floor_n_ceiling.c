@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.h                                          :+:      :+:    :+:   */
+/*   floor_n_ceiling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyap <hyap@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/19 20:07:46 by hyap              #+#    #+#             */
-/*   Updated: 2022/11/05 20:11:05 by hyap             ###   ########.fr       */
+/*   Created: 2022/11/08 14:11:50 by hyap              #+#    #+#             */
+/*   Updated: 2022/11/08 14:33:39 by hyap             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
-# define PARSING_H
-# include "main.h"
+#include "main.h"
 
-/* element_validation.c */
-void	validate_extension(char *map_path);
-int		is_valid_elements(char ***lines);
-/* map_validation.c */
-int		is_valid_map(t_game *game, char **lines);
-/* validation.c */
-int		is_valid_file_content(t_game *game, char **lines);
-/* parse.c */
-void	parse(t_game *game, char *map_path);
-
-#endif
+void	draw_floor_n_ceiling(t_img *img, int color, int start_y, int end_y)
+{
+	t_int_pos	px;
+	
+	px.y = start_y;
+	while (px.y < end_y)
+	{
+		px.x = 0;
+		while (px.x < WIN_WIDTH)
+		{
+			my_mlx_pixel_put(img, px.x, px.y, color);
+			px.x++;
+		}
+		px.y++;
+	}
+}

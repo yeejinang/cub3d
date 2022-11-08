@@ -15,13 +15,24 @@ INVALID_FILES=(\
 	"invalid_el(dup).cub"
 )
 	
+INVALID_MAP=(\
+	"invalid_map(0player).cub" \
+	"invalid_map(notclosed).cub" \
+	"invalid_map(2player).cub"
+)
+
 exe() {
 	echo ${RED}"${PROG} $@"${NC} ; ${PROG} $@ ;
 }
 
 if [ "$1" = "" ]; then
+	echo ${GREEN}"======== Test Elements ========"${NC}
 	for str in ${INVALID_FILES[@]}; do
 		exe ./maps/${str}
+	done
+	echo ${GREEN}"======== Test Map ========"${NC}
+	for map in ${INVALID_MAP[@]}; do
+		exe ./maps/${map}
 	done
 elif [ "$1" = "default" ]; then
 	exe ./maps/default.cub

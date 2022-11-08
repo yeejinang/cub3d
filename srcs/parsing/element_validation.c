@@ -6,7 +6,7 @@
 /*   By: hyap <hyap@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:36:12 by hyap              #+#    #+#             */
-/*   Updated: 2022/10/21 12:10:19 by hyap             ###   ########.fr       */
+/*   Updated: 2022/11/05 20:20:44 by hyap             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	validate_extension(char *map_path)
 	}
 	if (!file[i])
 		exit_error("Missing extension !\n");
-	if (ft_strncmp(&file[++i], "cub", 3) != 0)
+	if (ft_strcmp(&file[++i], "cub") != 0)
 		exit_error("Invalid extension !\n");
 }
 
@@ -44,9 +44,12 @@ int	is_asset_exist(char *file)
 	int	fd;
 	
 	fd = open(file, O_RDONLY);
-	// printf("file: %s\n", file);
 	if (fd < 0)
+	{
+		close(fd);
 		return (0);
+	}
+	close(fd);
 	return (1);
 }
 
