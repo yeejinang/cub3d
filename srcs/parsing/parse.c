@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyap <hyap@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: yang <yang@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 17:34:31 by hyap              #+#    #+#             */
-/*   Updated: 2022/11/05 20:53:38 by hyap             ###   ########.fr       */
+/*   Updated: 2022/11/09 17:17:04 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,9 @@ void	parse(t_game *game, char *map_path)
 	
 	validate_extension(map_path);
 	dptr = store_tmp_file_content(map_path);
+	game->door.img =  mlx_xpm_file_to_image(game->mlx, "./assets/door.xpm", &(game->door.x), \
+		&(game->door.y));
+	save_img_addr(&game->door);
 	if (is_valid_file_content(game, dptr) && store_elements(game, dptr))
 	{
 		free_splits(dptr);

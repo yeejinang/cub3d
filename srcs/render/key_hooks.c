@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hooks.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyap <hyap@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: yang <yang@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:10:18 by hyap              #+#    #+#             */
-/*   Updated: 2022/11/08 14:40:36 by hyap             ###   ########.fr       */
+/*   Updated: 2022/11/10 11:56:03 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	handle_movements(int key, t_game *game)
 	{
 		tmp.x = game->player_pos.pos.x0 + cos(deg_to_rad(angle)) * PLAYER_STEP;
 		tmp.y =	game->player_pos.pos.y0 - sin(deg_to_rad(angle)) * PLAYER_STEP;
-		if (!is_wall(game->map, tmp))
+		if (!is_wall_door(game->map, tmp))
 		{
 			game->player_pos.pos.x0 += cos(deg_to_rad(angle)) * PLAYER_STEP;
 			game->player_pos.pos.y0 -= sin(deg_to_rad(angle)) * PLAYER_STEP;
@@ -35,7 +35,7 @@ void	handle_movements(int key, t_game *game)
 	}
 	tmp.x = game->player_pos.pos.x0 - cos(deg_to_rad(angle)) * PLAYER_STEP;
 	tmp.y =	game->player_pos.pos.y0 + sin(deg_to_rad(angle)) * PLAYER_STEP;
-	if (!is_wall(game->map, tmp))
+	if (!is_wall_door(game->map, tmp))
 	{
 		game->player_pos.pos.x0 -= cos(deg_to_rad(angle)) * PLAYER_STEP;
 		game->player_pos.pos.y0 += sin(deg_to_rad(angle)) * PLAYER_STEP;
@@ -60,9 +60,19 @@ void	handle_angle(int key, t_game *game)
 
 int	handle_keypress(int key, t_game *game)
 {
+	if (key == OPEN_DOOR_BTN)
+		game->door_status = OPEN;
+	if (key == CLOSE_DOOR_BTN)
+		game->door_status = CLOSE;
+	// if (game->door_status == OPEN || game->door_status == CLOSE)
+	// 	handle_door(game);
 	if (key == W_BTN || key == S_BTN || key == A_BTN || key == D_BTN)
 		handle_movements(key, game);
 	handle_angle(key, game);
+	if (key == E_BTN && game->weapons.status == CLOSED)
+		game->weapons.status = OPENED;
+	else if (key == E_BTN && game->weapons.status == OPENED)
+		game->weapons.status = CLOSED;
 	set_player_direction(game);
 	return (0);
 }

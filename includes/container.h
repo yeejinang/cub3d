@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   container.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyap <hyap@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: yang <yang@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 17:09:53 by hyap              #+#    #+#             */
-/*   Updated: 2022/11/08 14:35:57 by hyap             ###   ########.fr       */
+/*   Updated: 2022/11/10 15:43:07 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,16 @@ typedef struct s_matrix			t_matrix;
 typedef struct s_player			t_player;
 typedef struct s_double_pos		t_double_pos;
 typedef struct s_raycast		t_raycast;
+typedef struct s_weapons		t_weapons;
+
+enum	door_status {
+	OPEN,
+	OPENING,
+	OPENED,
+	CLOSE,
+	CLOSING,
+	CLOSED
+};
 
 struct s_color {
 	int	r;
@@ -88,20 +98,39 @@ struct s_minimap
 	double player_delta_y;
 };
 
+struct s_weapons {
+	int			x;
+	int			y;
+	int			status;
+	t_int_pos	start_pos;
+	t_img		*images;
+};
+
+// struct s_door {
+// 	int		door_status;
+// 	t_img	prev_frame;
+// };
+
 struct s_game {
 	void		*mlx;
 	void		*win;
 	char		**map;
 	int			f_color;
 	int			c_color;
+	int			door_status;
+	t_img		frame_door_close;
+	t_img		frame_door_open;
+	t_img		prev_frame;
 	t_img		wall_NO;
 	t_img		wall_SO;
 	t_img		wall_EA;
 	t_img		wall_WE;
+	t_img 		door;
 	t_int_pos	map_size;
 	t_minimap	minimap;
 	t_player	player_pos;
 	t_img		img_3d;
+	t_weapons	weapons;
 };
 
 /* For checking duplicated elements 

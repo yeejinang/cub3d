@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyap <hyap@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: yang <yang@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 21:50:56 by hyap              #+#    #+#             */
-/*   Updated: 2022/11/08 12:34:29 by hyap             ###   ########.fr       */
+/*   Updated: 2022/11/09 16:14:40 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	get_color(char **map, t_double_pos dpos)
 	
 	pos.x = dpos.x;
 	pos.y = dpos.y;
-	if (is_wall(map, pos))
+	if (is_wall_door(map, pos))
 		return (GREEN);
 	return (WHITE);
 }
