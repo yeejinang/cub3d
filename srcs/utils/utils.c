@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyap <hyap@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: yang <yang@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 19:47:20 by hyap              #+#    #+#             */
-/*   Updated: 2022/11/07 21:08:39 by hyap             ###   ########.fr       */
+/*   Updated: 2022/11/09 18:53:16 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,9 @@ int	ft_atoi(const char *s)
 		res = (res * 10) + (s[i++] - '0');
 	ans = ans * res;
 	return (ans);
+}
+
+double ft_sqr(double num)
+{
+	return (num * num);
 }

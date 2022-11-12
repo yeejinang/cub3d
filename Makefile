@@ -6,7 +6,7 @@
 #    By: hyap <hyap@student.42kl.edu.my>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/19 15:59:25 by hyap              #+#    #+#              #
-#    Updated: 2022/11/07 21:56:56 by hyap             ###   ########.fr        #
+#    Updated: 2022/11/09 13:35:59 by hyap             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,7 @@ SRCS = ${wildcard $(SRCSDIR)/*.c} \
 		${wildcard $(SRCSDIR)/gnl/*.c} \
 		${wildcard $(SRCSDIR)/utils/*.c} \
 		${wildcard $(SRCSDIR)/parsing/*.c} \
-		${wildcard $(SRCSDIR)/render/*.c} \
-		# ${wildcard $(SRCSDIR)/minimap/*.c}
+		${wildcard $(SRCSDIR)/render/*.c}
 OBJSDIR = objs
 OBJS = $(SRCS:%.c=$(OBJSDIR)/%.o)
 CC = gcc

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyap <hyap@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: yang <yang@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 16:05:51 by hyap              #+#    #+#             */
-/*   Updated: 2022/11/08 14:34:38 by hyap             ###   ########.fr       */
+/*   Updated: 2022/11/10 16:33:01 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-void init_minimap(t_game *game)
+void	init_minimap(t_game *game)
 {
 	game->minimap.size.x = MI_WIDTH;
 	if (game->map_size.x < MI_WIDTH)
@@ -32,8 +32,9 @@ void init_minimap(t_game *game)
 							WIN_HEIGHT / 2, WIN_HEIGHT);
 }
 
-void	recreate_img(t_game *game)
+int	render_frame(t_game *game)
 {
+	// printf("rendering frame: door status: %d\n", game->door_status);
 	mlx_destroy_image(game->mlx, game->minimap.img.img);
 	mlx_destroy_image(game->mlx, game->img_3d.img);
 	game->minimap.img.img = mlx_new_image(game->mlx, game->minimap.pxsize.x, \
@@ -44,15 +45,20 @@ void	recreate_img(t_game *game)
 	draw_floor_n_ceiling(&(game->img_3d), game->c_color, 0, WIN_HEIGHT / 2);
 	draw_floor_n_ceiling(&(game->img_3d), game->f_color, \
 							WIN_HEIGHT / 2, WIN_HEIGHT);
-}
-
-int	render_frame(t_game *game)
-{
-	recreate_img(game);
 	draw_minimap(game);
-	draw_3D(game);
+	if (game->door_status == OPEN || game->door_status == OPENING || game->door_status == CLOSE)
+	{
+		printf("entering door...\n");
+		handle_door(game);
+	}
+	else
+	{
+		draw_3D(game);
+		// game->prev_frame = copy_image(game, game->img_3d);
+	}
 	mlx_put_image_to_window(game->mlx, game->win, game->img_3d.img, 0, 0);
 	mlx_put_image_to_window(game->mlx, game->win, game->minimap.img.img, 0, 0);
+	draw_weapon(game);
 	return (0);
 }
 
@@ -66,6 +72,7 @@ void	init_game(t_game *game, char *map_path)
 	printf("\n");
 	printf("color_c: %d, color_f: %d\n", game->c_color, game->f_color);
 	init_minimap(game);
+	init_weapon(game, &(game->weapons));
 	mlx_hook(game->win, 2, 1L << 0, handle_keypress, game);
 	mlx_loop_hook(game->mlx, render_frame, game);
 	mlx_loop(game->mlx);
@@ -97,6 +104,7 @@ int	main(int ac, char **av)
 	// mlx_key_hook(game.mlx, key_hook, &game);
 	// mlx_loop(game.mlx);
 	free_splits(game.map);
+	free(game.weapons.images);
 	// system("leaks cub3d");
 	return (0);
 }

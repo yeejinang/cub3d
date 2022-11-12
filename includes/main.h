@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyap <hyap@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: yang <yang@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 16:16:41 by hyap              #+#    #+#             */
-/*   Updated: 2022/11/07 18:44:18 by hyap             ###   ########.fr       */
+/*   Updated: 2022/11/09 18:16:51 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@
 # define A_BTN 0
 # define S_BTN 1
 # define D_BTN 2
+# define E_BTN 14
+# define OPEN_DOOR_BTN 126
+# define CLOSE_DOOR_BTN 125
 # define PLAYER_STEP 0.25
 # define SCALE 20
 # define FOV 66.0
@@ -59,5 +62,14 @@
 # define _FLOOR_IMG 2
 # define _CEILING_IMG 3
 # define _3D_IMG 4 
+/* Weapon animation paths */
+# define WEAPON0 "./assets/weapon0.xpm"
+# define WEAPON1 "./assets/weapon1.xpm"
+# define WEAPON2 "./assets/weapon2.xpm"
+# define WEAPON3 "./assets/weapon3.xpm"
+# define WEAPON4 "./assets/weapon4.xpm"
+/* Weapon Status */
+# define CLOSED 0
+# define OPENED 1
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyap <hyap@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: yang <yang@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 17:28:49 by hyap              #+#    #+#             */
-/*   Updated: 2022/11/07 21:49:45 by hyap             ###   ########.fr       */
+/*   Updated: 2022/11/09 18:53:36 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int			ft_atoi(const char *s);
 int			ft_strcmp(const char *s1, const char *s2);
 /* map_utils.c */
 int			is_space(char **lines, t_int_pos pos);
-int			is_wall(char **lines, t_int_pos pos);
+int			is_wall_door(char **lines, t_int_pos pos);
 int			is_player(char **lines, t_int_pos pos);
 int			is_floor(char **lines, t_int_pos pos);
 int			is_map_element(char **lines, t_int_pos pos);
@@ -48,4 +48,6 @@ void		better_angle(double *angle);
 uint32_t	get_tex_color(t_img *data, int x, int y);
 /* exit.c */
 void		exit_error(const char *s);
+
+double ft_sqr(double num);
 #endif
