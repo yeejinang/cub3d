@@ -6,7 +6,7 @@
 /*   By: yang <yang@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 13:55:27 by hyap              #+#    #+#             */
-/*   Updated: 2022/11/12 13:28:31 by yang             ###   ########.fr       */
+/*   Updated: 2022/11/13 14:27:16 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void pre_draw_texture(t_game *game, t_raycast *rc)
 
 t_img get_texture_img(t_game *game, t_raycast *rc, int elem)
 {
-	if (elem == 2)
+	if (elem == 2 || elem == 3)
 		return (game->door);
 	if (rc->side == 0 && rc->rayDir.x < 0)
 		return (game->wall_EA);
