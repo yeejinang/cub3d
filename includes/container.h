@@ -6,7 +6,7 @@
 /*   By: yang <yang@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 17:09:53 by hyap              #+#    #+#             */
-/*   Updated: 2022/11/13 13:56:10 by yang             ###   ########.fr       */
+/*   Updated: 2022/11/13 21:39:04 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,8 @@ typedef struct s_weapons t_weapons;
 enum door_status
 {
 	DOOR_OPEN,
-	DOOR_OPENING,
 	DOOR_OPENED,
 	DOOR_CLOSE,
-	DOOR_CLOSING,
 	DOOR_CLOSED,
 };
 

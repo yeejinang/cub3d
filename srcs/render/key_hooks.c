@@ -6,7 +6,7 @@
 /*   By: yang <yang@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:10:18 by hyap              #+#    #+#             */
-/*   Updated: 2022/11/12 17:16:34 by yang             ###   ########.fr       */
+/*   Updated: 2022/11/13 21:37:57 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,7 @@ void handle_angle(int key, t_game *game)
 int handle_keypress(int key, t_game *game)
 {
 	if (key == OPEN_DOOR_BTN)
-	{
 		game->door_status = DOOR_OPEN;
-		printf("door status, open door on press: %d\n", game->door_status);
-	}
 	if (key == CLOSE_DOOR_BTN)
 		game->door_status = DOOR_CLOSE;
 	// if (game->door_status == OPEN || game->door_status == CLOSE)

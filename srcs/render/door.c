@@ -6,7 +6,7 @@
 /*   By: yang <yang@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 17:27:17 by yang              #+#    #+#             */
-/*   Updated: 2022/11/13 14:25:35 by yang             ###   ########.fr       */
+/*   Updated: 2022/11/13 18:57:34 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void reset_img(t_game *game)
 	draw_floor_n_ceiling(&(game->img_3d), game->c_color, 0, WIN_HEIGHT / 2);
 	draw_floor_n_ceiling(&(game->img_3d), game->f_color,
 						 WIN_HEIGHT / 2, WIN_HEIGHT);
+	draw_minimap(game);
 }
 
 void frame_door_open_close(t_game *game)
@@ -145,34 +146,7 @@ void frame_door_open_close(t_game *game)
 		draw_texture(game, &rc, elem);
 		dda_3D(game, &rc, x);
 	}
-	// for closing door, frame_door_open should be frame with door closing
 	game->frame_door_open = copy_image(game, game->img_3d);
-}
-
-void frame_door_open_close_2(t_game *game)
-{
-	int x;
-	t_raycast rc;
-	int elem;
-
-	x = -1;
-	draw_3D(game);
-	game->frame_door_open = copy_image(game, game->img_3d);
-	reset_img(game);
-	while (++x < WIN_WIDTH)
-	{
-		rc.angle = (double)(game->player_pos.angle + (FOV / 2)) -
-				   ((double)x * (FOV / WIN_WIDTH));
-		better_angle(&(rc.angle));
-		init_raycast(game, &rc);
-		set_side_dist(game, &rc);
-		elem = determine_hit(game, &rc, true);
-		draw_rays(game, &rc);
-		draw_texture(game, &rc, elem);
-		dda_3D(game, &rc, x);
-	}
-	// for closing door, frame_door_open should be frame with door closing
-	game->frame_door_close = copy_image(game, game->img_3d);
 }
 
 void single_door_frame(t_game *game, double percent)
@@ -190,17 +164,17 @@ void single_door_frame(t_game *game, double percent)
 		better_angle(&(rc_door.angle));
 		init_raycast(game, &rc_door);
 		set_side_dist(game, &rc_door);
-		elem = determine_hit(game, &rc_door, false);
+		elem = determine_hit(game, &rc_door, true);
 		draw_rays(game, &rc_door);
 		draw_texture(game, &rc_door, elem);
-		if (elem == 2)
+		if (elem == 2 || elem == 3)
 			dda_door_3D(game, &rc_door, x, percent);
 		else
 			dda_3D(game, &rc_door, x);
 	}
 }
 
-void opening_door(t_game *game, t_raycast *rc)
+void opening_closing_door(t_game *game, t_raycast *rc, int handle_door)
 {
 	static double frame = 0.1;
 
@@ -208,72 +182,46 @@ void opening_door(t_game *game, t_raycast *rc)
 	if (frame < 1.0)
 		single_door_frame(game, frame);
 	frame += 0.1;
-	printf("frame: %f\n", frame);
 	if (frame > 1.000000)
 	{
-		printf("door opened!\n");
-		game->door_status = DOOR_OPENED;
-		game->map[rc->map_pos.y][rc->map_pos.x] = '3';
+		if (handle_door == OPENED)
+		{
+			game->door_status = DOOR_OPENED;
+			game->map[rc->map_pos.y][rc->map_pos.x] = '3';
+		}
+		else if (handle_door == CLOSED)
+		{
+			game->door_status = DOOR_CLOSED;
+			game->map[rc->map_pos.y][rc->map_pos.x] = '2';
+		}
 		frame = 0.1;
 	}
-}
-
-void closing_door(t_game *game, t_raycast *rc)
-{
-	static double close_frame = 1.0;
-
-	(void)rc;
-	frame_door_open_close_2(game);
-	// if (!close_frame)
-	single_door_frame(game, close_frame);
-	// close_frame -= 0.1;
-	// printf("frame: %f\n", close_frame);
-	// if (close_frame < 0.000000)
-	// {
-	// 	printf("door closed!\n");
-	// 	game->door_status = DOOR_CLOSED;
-	// 	game->map[rc->map_pos.y][rc->map_pos.x] = '2';
-	// 	close_frame = 1.0;
-	// }
 }
 
 void handle_door(t_game *game)
 {
 	t_raycast rc;
-	// t_raycast rc_door;
 	int x;
-	// int elem;
+	char door_char;
+	bool facing_door;
 
 	x = -1;
 	rc.angle = game->player_pos.angle;
-	printf("handling door\n");
-	printf("door status: %d\n", game->door_status);
-	// game->door_status = DOOR_CLOSE;
-	if (is_player_facing_door(game, &rc))
+	facing_door = is_player_facing_door(game, &rc);
+	door_char = game->map[rc.map_pos.y][rc.map_pos.x];
+	if (facing_door && ((game->door_status == DOOR_OPEN && door_char == '2') || (game->door_status == DOOR_CLOSE && door_char == '3')))
 	{
-		// game->prev_frame = game->img_3d;
-		// mlx_put_image_to_window(game->mlx, game->win, game->img_3d.img, 0, 0);
 		if (game->door_status == DOOR_OPEN)
-		{
-			printf("opening door...\n");
-			game->door_status = DOOR_OPENING;
-			printf("door status: %d\n", game->door_status);
-		}
+			opening_closing_door(game, &rc, OPENED);
 		else if (game->door_status == DOOR_CLOSE)
-		{
-			printf("close door...\n");
-			game->door_status = DOOR_CLOSING;
-		}
-		if (game->door_status == DOOR_OPENING)
-		{
-			printf("disappering..\n");
-			opening_door(game, &rc);
-		}
-		else if (game->door_status == DOOR_CLOSING)
-		{
-			printf("closing door..\n");
-			closing_door(game, &rc);
-		}
+			opening_closing_door(game, &rc, CLOSED);
+	}
+	else if (facing_door)
+	{
+		if (door_char == '2')
+			game->door_status = DOOR_CLOSED;
+		else if (door_char == '3')
+			game->door_status = DOOR_OPENED;
 	}
 	else
 		game->door_status = DOOR_CLOSED;

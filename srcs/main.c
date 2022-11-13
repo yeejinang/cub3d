@@ -6,7 +6,7 @@
 /*   By: yang <yang@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 16:05:51 by hyap              #+#    #+#             */
-/*   Updated: 2022/11/12 17:17:48 by yang             ###   ########.fr       */
+/*   Updated: 2022/11/13 21:38:35 by yang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void init_minimap(t_game *game)
 	draw_floor_n_ceiling(&(game->img_3d), game->f_color,
 						 WIN_HEIGHT / 2, WIN_HEIGHT);
 	game->door_status = DOOR_CLOSED;
-	printf("init door as closed: %d\n", game->door_status);
 }
 
 int render_frame(t_game *game)
@@ -47,7 +46,7 @@ int render_frame(t_game *game)
 	draw_floor_n_ceiling(&(game->img_3d), game->f_color,
 						 WIN_HEIGHT / 2, WIN_HEIGHT);
 	draw_minimap(game);
-	if (game->door_status != DOOR_OPENED && game->door_status != DOOR_CLOSED)
+	if (game->door_status == DOOR_OPEN || game->door_status == DOOR_CLOSE)
 		handle_door(game);
 	else
 		draw_3D(game);
